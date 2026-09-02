@@ -283,3 +283,80 @@
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  .category-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .category-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+  }
+
+  .category-row input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--navy);
+    flex-shrink: 0;
+  }
+
+  .category-row-label {
+    flex: 1;
+    font-size: 14px;
+  }
+  .category-row-label .category-due {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .category-row input[type="number"] {
+    width: 110px;
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .category-breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13.5px;
+  }
+  .category-breakdown-row:last-child { border-bottom: none; }
+  .category-breakdown-row .cat-name { font-weight: 600; }
+  .category-breakdown-row .cat-meta { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+  .category-breakdown-row .cat-balance.owing { color: var(--bad); font-weight: 700; }
+  .category-breakdown-row .cat-balance.clear { color: var(--good); font-weight: 700; }
+
+  .payment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .payment-row-main { flex: 1; }
+
+  .void-btn {
+    background: var(--bad-bg);
+    color: var(--bad);
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 10px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
