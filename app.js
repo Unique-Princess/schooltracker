@@ -1,5 +1,5 @@
 // PASTE your Apps Script deployment's /exec URL here after deploying:
-const API_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwVulbnnA-tZ1dM68QEcjCN37oCc5a-ByWVQMOS_ezQON9jPYMdursGk754FJpcnq3b0w/exec';
 
 let DATA = { students: [], terms: [], fees: [], balances: [], payments: [], discounts: [], currentTerm: null, categories: [] };
 let STAFF_NAME = null;
