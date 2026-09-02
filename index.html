@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>School Fees</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand-mark">SF</div>
+    <div class="topbar-text">
+      <span class="topbar-title" id="termLabel">School Fees</span>
+      <span class="topbar-sub" id="staffLabel">Fee Tracker</span>
+    </div>
+  </header>
+
+  <main id="app">
+    <div class="loading" id="loadingState">
+      <div class="spinner"></div>
+      <p>Loading student records…</p>
+    </div>
+
+    <section id="gateScreen" class="screen hidden">
+      <h1>Who's recording today?</h1>
+      <p class="muted">Enter your name to start logging payments.</p>
+      <label class="field-label">Your name</label>
+      <input id="gateName" class="input" type="text" placeholder="e.g. Mrs. Adeyemi" />
+      <button class="btn btn-primary btn-block" id="gateContinue">Continue</button>
+    </section>
+
+    <section id="listScreen" class="screen hidden">
+      <h1>Students</h1>
+      <input id="studentSearch" class="input" type="text" placeholder="Search by name or class…" />
+      <div id="studentList" class="student-list"></div>
+    </section>
+
+    <section id="detailScreen" class="screen hidden">
+      <button class="back-btn" id="backToList">‹ Back to students</button>
+      <h1 id="detailName">Student</h1>
+      <p class="muted" id="detailClass">Class</p>
+
+      <div class="due-card">
+        <div class="due-row"><span>Carried over (previous term)</span><span id="detailOpening">₦0</span></div>
+        <div class="due-row"><span>This term's fee</span><span id="detailExpected">₦0</span></div>
+        <div class="due-row total"><span>Total due</span><span id="detailTotalDue">₦0</span></div>
+        <div class="due-row"><span>Paid so far</span><span id="detailPaid">₦0</span></div>
+        <div class="due-row balance"><span>Balance remaining</span><span id="detailBalance">₦0</span></div>
+      </div>
+
+      <h2 class="section-heading">Record a payment</h2>
+      <label class="field-label">Amount (₦)</label>
+      <input id="paymentAmount" class="input" type="number" inputmode="decimal" />
+      <label class="field-label">Note (optional)</label>
+      <input id="paymentNote" class="input" type="text" placeholder="e.g. Cash, first installment" />
+      <button class="btn btn-primary btn-block" id="paymentSubmit">Record payment</button>
+      <div class="feedback" id="paymentFeedback"></div>
+
+      <details class="opening-editor">
+        <summary>Correct carried-over balance</summary>
+        <p class="muted small">Use this to add unpaid fees from before this system was in use, or to fix an incorrect carryover.</p>
+        <label class="field-label">Carried-over amount (₦)</label>
+        <input id="openingAmount" class="input" type="number" inputmode="decimal" />
+        <button class="btn btn-secondary btn-block" id="openingSubmit">Save carried-over balance</button>
+        <div class="feedback" id="openingFeedback"></div>
+      </details>
+
+      <h2 class="section-heading">Payment history</h2>
+      <div id="paymentHistory" class="payment-history"></div>
+    </section>
+
+    <section id="recentScreen" class="screen hidden">
+      <h1>Recent payments</h1>
+      <div id="recentList" class="payment-history"></div>
+    </section>
+  </main>
+
+  <nav class="tabbar hidden" id="tabbar">
+    <button class="tab-btn active" data-screen="listScreen"><span class="tab-icon">☰</span><span>Students</span></button>
+    <button class="tab-btn" data-screen="recentScreen"><span class="tab-icon">₦</span><span>Recent</span></button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
