@@ -1,5 +1,5 @@
 // PASTE your Apps Script deployment's /exec URL here after deploying:
-const API_URL = 'https://script.google.com/macros/s/AKfycbwVulbnnA-tZ1dM68QEcjCN37oCc5a-ByWVQMOS_ezQON9jPYMdursGk754FJpcnq3b0w/exec';
+const API_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
 
 let DATA = { students: [], terms: [], fees: [], balances: [], payments: [], discounts: [], currentTerm: null, categories: [] };
 let STAFF_NAME = null;
@@ -127,12 +127,15 @@ function getStudentFinancials(studentId) {
     return { category: f.Category, expected: Number(f.ExpectedAmount), paid, balance: Number(f.ExpectedAmount) - paid };
   });
 
+  const carryOverPaid = studentPayments.filter(p => p.Category === 'Previous Term Balance').reduce((sum, p) => sum + Number(p.Amount), 0);
+  const carryOverBalance = Math.max(opening - carryOverPaid, 0);
+
   const expected = byCategory.reduce((sum, c) => sum + c.expected, 0);
   const paid = studentPayments.reduce((sum, p) => sum + Number(p.Amount), 0);
   const totalDue = Math.max(opening + expected - discount, 0);
   const balance = totalDue - paid;
 
-  return { opening, discount, expected, totalDue, paid, balance, byCategory, studentPayments };
+  return { opening, carryOverBalance, discount, expected, totalDue, paid, balance, byCategory, studentPayments };
 }
 
 function renderStudentList() {
@@ -200,16 +203,27 @@ function openStudent(studentId) {
 
 function renderCategoryInputs(fin) {
   const container = document.getElementById('categoryInputs');
-  if (fin.byCategory.length === 0) {
-    container.innerHTML = '<p class="muted">No fee categories set for this class/term yet.</p>';
-    return;
+  const rows = [];
+
+  if (fin.carryOverBalance > 0) {
+    rows.push(`
+      <label class="category-row">
+        <input type="checkbox" class="cat-checkbox" data-category="Previous Term Balance" checked />
+        <span class="category-row-label">Previous term balance<span class="category-due">Balance: ₦${fin.carryOverBalance.toLocaleString()}</span></span>
+        <input type="number" class="cat-amount" inputmode="decimal" value="${fin.carryOverBalance}" />
+      </label>`);
   }
-  container.innerHTML = fin.byCategory.map(c => `
-    <label class="category-row">
-      <input type="checkbox" class="cat-checkbox" data-category="${c.category}" ${c.balance > 0 ? 'checked' : ''} />
-      <span class="category-row-label">${c.category}<span class="category-due">Balance: ₦${Math.max(c.balance, 0).toLocaleString()}</span></span>
-      <input type="number" class="cat-amount" inputmode="decimal" value="${Math.max(c.balance, 0)}" />
-    </label>`).join('');
+
+  fin.byCategory.forEach(c => {
+    rows.push(`
+      <label class="category-row">
+        <input type="checkbox" class="cat-checkbox" data-category="${c.category}" ${c.balance > 0 ? 'checked' : ''} />
+        <span class="category-row-label">${c.category}<span class="category-due">Balance: ₦${Math.max(c.balance, 0).toLocaleString()}</span></span>
+        <input type="number" class="cat-amount" inputmode="decimal" value="${Math.max(c.balance, 0)}" />
+      </label>`);
+  });
+
+  container.innerHTML = rows.join('') || '<p class="muted">No fee categories set for this class/term yet.</p>';
 }
 
 function renderPaymentHistory(payments, targetId) {
