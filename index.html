@@ -23,11 +23,12 @@
     </div>
 
     <section id="gateScreen" class="screen hidden">
-      <h1>Who's recording today?</h1>
-      <p class="muted">Enter your name to start logging payments.</p>
-      <label class="field-label">Your name</label>
-      <input id="gateName" class="input" type="text" placeholder="e.g. Mrs. Adeyemi" />
+      <h1>Staff login</h1>
+      <p class="muted">Enter your PIN to start logging payments.</p>
+      <label class="field-label">PIN</label>
+      <input id="gatePin" class="input" type="password" inputmode="numeric" placeholder="••••" />
       <button class="btn btn-primary btn-block" id="gateContinue">Continue</button>
+      <div class="feedback" id="gateFeedback"></div>
     </section>
 
     <section id="listScreen" class="screen hidden">
@@ -41,17 +42,20 @@
       <h1 id="detailName">Student</h1>
       <p class="muted" id="detailClass">Class</p>
 
+      <div class="due-card" id="categoryBreakdown"></div>
+
       <div class="due-card">
         <div class="due-row"><span>Carried over (previous term)</span><span id="detailOpening">₦0</span></div>
-        <div class="due-row"><span>This term's fee</span><span id="detailExpected">₦0</span></div>
+        <div class="due-row" id="detailDiscountRow"><span>Discount/waiver</span><span id="detailDiscount">₦0</span></div>
         <div class="due-row total"><span>Total due</span><span id="detailTotalDue">₦0</span></div>
         <div class="due-row"><span>Paid so far</span><span id="detailPaid">₦0</span></div>
         <div class="due-row balance"><span>Balance remaining</span><span id="detailBalance">₦0</span></div>
       </div>
 
       <h2 class="section-heading">Record a payment</h2>
-      <label class="field-label">Amount (₦)</label>
-      <input id="paymentAmount" class="input" type="number" inputmode="decimal" />
+      <p class="muted small">Tick what's being paid for — one, some, or all.</p>
+      <div id="categoryInputs" class="category-inputs"></div>
+
       <label class="field-label">Note (optional)</label>
       <input id="paymentNote" class="input" type="text" placeholder="e.g. Cash, first installment" />
       <button class="btn btn-primary btn-block" id="paymentSubmit">Record payment</button>
@@ -66,19 +70,51 @@
         <div class="feedback" id="openingFeedback"></div>
       </details>
 
+      <details class="opening-editor">
+        <summary>Apply a discount or waiver</summary>
+        <p class="muted small">Use this for scholarships, staff-child waivers, sibling discounts, etc.</p>
+        <label class="field-label">Discount amount (₦)</label>
+        <input id="discountAmount" class="input" type="number" inputmode="decimal" />
+        <label class="field-label">Reason</label>
+        <input id="discountReason" class="input" type="text" placeholder="e.g. Staff child, 50% scholarship" />
+        <button class="btn btn-secondary btn-block" id="discountSubmit">Save discount</button>
+        <div class="feedback" id="discountFeedback"></div>
+      </details>
+
       <h2 class="section-heading">Payment history</h2>
       <div id="paymentHistory" class="payment-history"></div>
     </section>
 
     <section id="recentScreen" class="screen hidden">
       <h1>Recent payments</h1>
+      <div class="row-2">
+        <div>
+          <label class="field-label">Filter by date</label>
+          <input id="recentDateFilter" class="input" type="date" />
+        </div>
+        <div>
+          <label class="field-label">&nbsp;</label>
+          <button class="btn btn-secondary btn-block" id="recentDateClear" style="margin-top:0">Clear filter</button>
+        </div>
+      </div>
       <div id="recentList" class="payment-history"></div>
+    </section>
+
+    <section id="reportsScreen" class="screen hidden">
+      <h1>Termly report</h1>
+      <p class="muted" id="reportTermLabel"></p>
+      <div class="due-card" id="reportSummary"></div>
+      <h2 class="section-heading">Collected by category</h2>
+      <div class="due-card" id="reportByCategory"></div>
+      <h2 class="section-heading">By class</h2>
+      <div id="reportByClass" class="student-list"></div>
     </section>
   </main>
 
   <nav class="tabbar hidden" id="tabbar">
     <button class="tab-btn active" data-screen="listScreen"><span class="tab-icon">☰</span><span>Students</span></button>
     <button class="tab-btn" data-screen="recentScreen"><span class="tab-icon">₦</span><span>Recent</span></button>
+    <button class="tab-btn" data-screen="reportsScreen"><span class="tab-icon">▤</span><span>Reports</span></button>
   </nav>
 
   <script src="app.js"></script>
